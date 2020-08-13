@@ -43,6 +43,8 @@ GET_RUN_ENDPOINT = ('GET', 'api/2.0/jobs/runs/get')
 CANCEL_RUN_ENDPOINT = ('POST', 'api/2.0/jobs/runs/cancel')
 USER_AGENT_HEADER = {'user-agent': 'airflow-{v}'.format(v=__version__)}
 
+LIBRARY_INSTALL_ENDPOINT = ('POST', 'api/2.0/libraries/install')
+LIBRARY_UNINSTALL_ENDPOINT = ('POST', 'api/2.0/libraries/uninstall')
 
 class RunState:
     """
@@ -298,6 +300,26 @@ class DatabricksHook(BaseHook):
         :param json: json dictionary containing cluster specification.
         """
         self._do_api_call(TERMINATE_CLUSTER_ENDPOINT, json)
+
+    def install_lib(self, json) -> None:
+        """
+        Utility function to call the ``api/2.0/libraries/install`` endpoint.
+
+        :param json: The cluster_id and list of libaries to install.
+        :type json: dict
+        """
+        response = self._do_api_call(LIBRARY_INSTALL_ENDPOINT, json)
+
+    def uninstall_lib(self, json) -> None:
+        """
+        Utility function to call the ``api/2.0/libraries/uninstall`` endpoint.
+
+        :param json: The cluster_id and list of libaries to uninstall.
+        :type json: dict
+        """
+        response = self._do_api_call(LIBRARY_INSTALL_ENDPOINT, json)
+        return response['run_id']
+
 
 
 def _retryable_error(exception):
