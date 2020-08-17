@@ -318,7 +318,6 @@ class DatabricksHook(BaseHook):
         :type json: dict
         """
         response = self._do_api_call(LIBRARY_INSTALL_ENDPOINT, json)
-        return response['run_id']
 
 
 
